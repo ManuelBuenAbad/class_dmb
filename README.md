@@ -11,6 +11,7 @@ For download and information, see http://class-code.net
 
 Modified to include Dark Matter-baryon interactions by
 Manuel A. Buen-Abad, 2020.
+For a benchmark of Dark Matter-baryon interactions, see ./ini/dmb_benchmark.ini.
 
 Compiling CLASS and getting started
 -----------------------------------
