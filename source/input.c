@@ -628,8 +628,8 @@ int input_read_parameters(
 
   /** - define local variables */
 
-  int flag1,flag2,flag3;
-  double param1,param2,param3;
+  int flag1,flag2,flag3,flagA,flagB;
+  double param1,param2,param3,paramA,paramB;
   int N_ncdm=0,n,entries_read;
   int int1,fileentries;
   double scf_lambda;
@@ -891,43 +891,67 @@ int input_read_parameters(
 
   Omega_tot += pba->Omega0_idr;
 
-  /** - Omega_0_cdm (CDM) */
-  class_call(parser_read_double(pfc,"Omega_cdm",&param1,&flag1,errmsg),
-             errmsg,
-             errmsg);
-  class_call(parser_read_double(pfc,"omega_cdm",&param2,&flag2,errmsg),
-             errmsg,
-             errmsg);
-  class_test(((flag1 == _TRUE_) && (flag2 == _TRUE_)),
-             errmsg,
-             "In input file, you can only enter one of Omega_cdm or omega_cdm, choose one");
-  if (flag1 == _TRUE_)
-    pba->Omega0_cdm = param1;
-  if (flag2 == _TRUE_)
-    pba->Omega0_cdm = param2/pba->h/pba->h;
-
-  if ((ppt->gauge == synchronous) && (pba->Omega0_cdm==0)) pba->Omega0_cdm = ppr->Omega0_cdm_min_synchronous;
-
-  Omega_tot += pba->Omega0_cdm;
-
 //MANUEL
-  class_call(parser_read_double(pfc,"Omega_chi",&param1,&flag1,errmsg),
+  /** - omega_dm_tot & f_chi */
+  class_call(parser_read_double(pfc,"omega_dm_tot",&paramA,&flagA,errmsg),
              errmsg,
              errmsg);
-  class_call(parser_read_double(pfc,"omega_chi",&param2,&flag2,errmsg),
+  class_call(parser_read_double(pfc,"f_chi",&paramB,&flagB,errmsg),
              errmsg,
              errmsg);
 
-  class_test(((flag1 == _TRUE_) && (flag2 == _TRUE_)),
+  class_test((((flagA == _TRUE_) && (flagB == _FALSE_)) || ((flagA == _FALSE_) && (flagB == _TRUE_))),
              errmsg,
-             "In input file, you can only enter one of Omega_cdm or omega_cdm, choose one");
+             "In input file, if you enter f_chi you need to enter omega_dm_tot, and viceversa.");
 
-  if (flag1 == _TRUE_)
-    pba->Omega0_chi = param1;
-  else if (flag2 == _TRUE_)
-    pba->Omega0_chi = param2/pba->h/pba->h;
+  if ((flagA == _TRUE_) && (flagB == _TRUE_)) {
 
-  Omega_tot += pba->Omega0_chi;
+    pba->Omega0_cdm = (1.-paramB)*paramA/pba->h/pba->h;
+    pba->Omega0_chi = (paramB*paramA)/pba->h/pba->h;
+
+    if ((ppt->gauge == synchronous) && (pba->Omega0_cdm==0)) pba->Omega0_cdm = ppr->Omega0_cdm_min_synchronous;
+
+    Omega_tot += pba->Omega0_cdm + pba->Omega0_chi;
+  }
+  else {
+
+    /** - Omega_0_cdm (CDM) */
+    class_call(parser_read_double(pfc,"Omega_cdm",&param1,&flag1,errmsg),
+               errmsg,
+               errmsg);
+    class_call(parser_read_double(pfc,"omega_cdm",&param2,&flag2,errmsg),
+               errmsg,
+               errmsg);
+    class_test(((flag1 == _TRUE_) && (flag2 == _TRUE_)),
+               errmsg,
+               "In input file, you can only enter one of Omega_cdm or omega_cdm, choose one");
+    if (flag1 == _TRUE_)
+      pba->Omega0_cdm = param1;
+    if (flag2 == _TRUE_)
+      pba->Omega0_cdm = param2/pba->h/pba->h;
+
+    if ((ppt->gauge == synchronous) && (pba->Omega0_cdm==0)) pba->Omega0_cdm = ppr->Omega0_cdm_min_synchronous;
+
+    Omega_tot += pba->Omega0_cdm;
+
+    class_call(parser_read_double(pfc,"Omega_chi",&param1,&flag1,errmsg),
+               errmsg,
+               errmsg);
+    class_call(parser_read_double(pfc,"omega_chi",&param2,&flag2,errmsg),
+               errmsg,
+               errmsg);
+
+    class_test(((flag1 == _TRUE_) && (flag2 == _TRUE_)),
+               errmsg,
+               "In input file, you can only enter one of Omega_cdm or omega_cdm, choose one");
+
+    if (flag1 == _TRUE_)
+      pba->Omega0_chi = param1;
+    else if (flag2 == _TRUE_)
+      pba->Omega0_chi = param2/pba->h/pba->h;
+
+    Omega_tot += pba->Omega0_chi;
+  }
 //MANUEL
 
   /** - Omega_0_icdm_dr (DM interacting with DR) */

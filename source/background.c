@@ -652,7 +652,7 @@ int background_init(
   if (pba->background_verbose > 0) {
     printf("Running CLASS version %s\n",_VERSION_);
 //MANUEL
-    printf("Includes possibility of Dark Matter-baryons interactions.")
+    printf("Includes possibility of Dark Matter-baryons interactions.");
 //MANUEL
     printf("Computing background\n");
 
