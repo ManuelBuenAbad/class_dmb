@@ -107,6 +107,7 @@ cdef extern from "class.h":
         int index_th_Tx
         int index_th_Rx
         int index_th_Rxprime
+        int index_th_dkappa
         short compute_dm_thermo
 # MANUEL
         short inter_normal

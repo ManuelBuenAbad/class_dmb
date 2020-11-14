@@ -1123,6 +1123,18 @@ cdef class Class:
       [MeV]
       """
       return self.th.mB*(5.609588652821669e29)
+    
+    def YHe(self):
+      """
+      Primordial Helium mass fraction
+      """
+      return self.th.YHe
+  
+    def fHe(self):
+      """
+      Primordial Helium number density fraction
+      """
+      return self.th.YHe/(3.9715 *(1. - self.th.YHe))
 
     def z_nr(self):
       """
@@ -1255,6 +1267,41 @@ cdef class Class:
         free(pvecthermo)
 
         return Rx_prime
+    
+    def Rg(self, z):
+        """
+        Rg(z)
+
+        Return the heat exchange rate [1/Mpc] of the baryons (from the photons) for a given redshift z
+
+        Parameters
+        ----------
+        z : float
+                Desired redshift
+        """
+        cdef double tau
+        cdef int last_index #junk
+        cdef double * pvecback
+        cdef double * pvecthermo
+
+        pvecback = <double*> calloc(self.ba.bg_size,sizeof(double))
+        pvecthermo = <double*> calloc(self.th.th_size,sizeof(double))
+
+        if background_tau_of_z(&self.ba,z,&tau)==_FAILURE_:
+            raise CosmoSevereError(self.ba.error_message)
+
+        if background_at_tau(&self.ba,tau,self.ba.long_info,self.ba.inter_normal,&last_index,pvecback)==_FAILURE_:
+            raise CosmoSevereError(self.ba.error_message)
+
+        if thermodynamics_at_z(&self.ba,&self.th,z,self.th.inter_normal,&last_index,pvecback,pvecthermo) == _FAILURE_:
+            raise CosmoSevereError(self.th.error_message)
+
+        Rg = pvecthermo[self.th.index_th_dkappa]
+        Rg *= (4./3.) * self.ba.Omega0_g/self.ba.Omega0_b * (1.+z)
+
+        free(pvecback)
+        
+        return Rg
 # MANUEL
 
     def Neff(self):
@@ -1534,6 +1581,21 @@ cdef class Class:
         Return the CMB temperature
         """
         return self.ba.T_cmb
+
+# MANUEL
+    def mub(self, z):
+        """
+        mean baryon mass [MeV]
+        """
+        
+        mH_MeV = (1.673575e-27)*(5.609588652821669e29)
+        not4 = 3.9715
+        
+        fHe = self.fHe()
+        xe = self.ionization_fraction(z)
+        
+        return mH_MeV*(1. + not4*fHe)/(1. + fHe + xe)
+#MANUEL
 
     # redundent with a previous Omega_m() funciton,
     # but we leave it not to break compatibility
