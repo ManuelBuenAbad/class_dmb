@@ -157,8 +157,8 @@ class_precision_parameter(recfast_x_H0_trigger_delta,double,0.05)  /**< Smoothin
 class_precision_parameter(recfast_H_frac,double,1.0e-3)  /**< from recfast 1.4, specifies the time at which the temperature evolution is calculated by the more precise equation */
 
 class_precision_parameter(reionization_z_start_max,double,50.0) /**< Maximum starting value in z for reionization */
-// class_precision_parameter(reionization_sampling,double,5.0e-2)  /**< Sampling density in z during reionization *///MANUEL: ORIGINAL
-class_precision_parameter(reionization_sampling,double,1.0e-2)  /**< Sampling density in z during reionization *///MANUEL: NEW
+class_precision_parameter(reionization_sampling,double,5.0e-2)  /**< Sampling density in z during reionization *///MANUEL: ORIGINAL
+// class_precision_parameter(reionization_sampling,double,1.0e-2)  /**< Sampling density in z during reionization *///MANUEL: NEW
 class_precision_parameter(reionization_optical_depth_tol,double,1.0e-4) /**< Relative tolerance on finding the user-given optical depth of reionization given a certain redshift of reionization */
 class_precision_parameter(reionization_start_factor,double,8.0) /**< Searching optical depth corresponding to the redshift is started from an initial offset beyond z_reionization_start, multiplied by reionization_width */
 
