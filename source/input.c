@@ -1519,6 +1519,12 @@ int input_read_parameters(
   else {
     pth->compute_dm_thermo = _FALSE_;
     ppt->compute_dm_thermo = _FALSE_;
+
+    if ((pth->sigma_0 == 0.) && (pba->Omega0_chi != 0.)) {
+        // This is the LCDM limit, and need to move the chiDM density to CDM
+        pba->Omega0_cdm += pba->Omega0_chi;
+        pba->Omega0_chi = 0.;
+    }
   }
 
   /** - baryon masses */
