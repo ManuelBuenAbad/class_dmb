@@ -3699,6 +3699,12 @@ int thermodynamics_reionization_sample(
                  pth->error_message);
 
       free(pdmde->tau_vec);
+
+      // MANUEL: NOTE: I assigned &gi earlier, even though never used it
+      class_call(cleanup_generic_integrator(&gi),
+                 gi.error_message,
+                 pth->error_message);
+
     }
     else if (pth->reio_integrator == generic_int) {
 
