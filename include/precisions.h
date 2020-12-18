@@ -121,7 +121,7 @@ class_precision_parameter(thermo_Nz2_idm_dr,int,100)
  * Tolerance of the relative value of integral during thermodynamical integration
  */
 // class_precision_parameter(tol_thermo_integration,double,1.0e-2)//MANUEL: ORIGINAL
-class_precision_parameter(tol_thermo_integration,double,1.0e-3)//MANUEL: NEW
+class_precision_parameter(tol_thermo_integration,double,1.0e-5)//MANUEL: NEW
 /*
  * Recfast 1.4 switch parameters
  */
@@ -169,7 +169,7 @@ class_precision_parameter(refine, int, 100) /**< refining steps for integration 
 class_precision_parameter(Rx_H_ratio, double, 100.) /**< Rx/H ratio */
 class_precision_parameter(dmde_buffer, double, 20.) /**< redshifts buffer for the n=-4 case */
 class_precision_parameter(z_dmde_max, double, 2.e7) /**< the largest redshift we can consider, because of the stiff integrator */
-class_precision_parameter(tol_dmde_integration, double, 1.e-3) /**< precision of each integration step */
+class_precision_parameter(tol_dmde_integration, double, 1.e-5) /**< precision of each integration step */
 //MANUEL
 
 
