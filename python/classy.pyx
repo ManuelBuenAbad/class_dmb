@@ -1103,6 +1103,14 @@ cdef class Class:
     def f_chi(self):
       return self.ba.Omega0_chi/(self.ba.Omega0_chi + self.ba.Omega0_cdm)
 
+    def rs_rec(self):
+      self.compute(["thermodynamics"])
+      return self.th.rs_rec
+
+    def rd_rec(self):
+      self.compute(["thermodynamics"])
+      return self.th.rd_rec
+
     def sigma0(self):
       """
       [cm^2]
@@ -1969,6 +1977,8 @@ cdef class Class:
                 value = self.th.da_star
             elif name == 'rd_star':
                 value = self.th.rd_star
+            elif name == 'rd_rec':
+                value = self.th.rd_rec
             elif name == 'z_d':
                 value = self.th.z_d
             elif name == 'tau_d':

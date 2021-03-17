@@ -132,6 +132,7 @@ cdef extern from "class.h":
         double YHe
         double n_e
 # MANUEL
+        double rd_rec
         double sigma_0
         double pow_n
         double mx
